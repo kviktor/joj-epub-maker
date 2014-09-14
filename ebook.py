@@ -18,6 +18,12 @@ class WikiUtils(object):
 
     @classmethod
     def html_tag_to_markdown(cls, tag, figures):
+        """ Creates markdown from HTML
+        - paragraphs are regular texts with new lines
+        - h3 tag contents are converted into bold text
+        - dt tags are italic
+        - images are in a separate method
+        """
         text = ""
         class_ = tag.attrs.get("class", [])
         if tag.name == "p" and "caption" not in class_:
@@ -33,6 +39,12 @@ class WikiUtils(object):
 
     @classmethod
     def parse_image_related_tags(cls, tag, figures):
+        """ Parses the images in the text
+        - figures are converted into markdown images with caption at the end
+        of the section
+        - regular links with image but without caption are converted into
+        images at their current position
+        """
         text = ""
         if tag.name == "figure":
             link = tag.find("a")
@@ -59,6 +71,9 @@ class WikiUtils(object):
 
     @staticmethod
     def parse_figures(figures):
+        """ Creates markdown compatible images from the figures
+        dict with captions
+        """
         if figures is None:
             return ""
 
@@ -74,6 +89,9 @@ class WikiUtils(object):
 
 
 def loop_until_tag(text, figures, firstElement, lastElement):
+    """ loops unti the next tag (great function name!)
+    figures are collected til the end tag is found
+    """
     new_text, figures = WikiUtils.html_tag_to_markdown(firstElement, figures)
     text += new_text
 
@@ -127,6 +145,7 @@ def create_book_markdown():
         markdown += WikiPage(link).get_markdown()
 
     return markdown.encode("utf-8")
+
 
 if __name__ == "__main__":
     with open("ebook.txt", "wb") as book:
