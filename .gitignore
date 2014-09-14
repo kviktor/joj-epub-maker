@@ -1,4 +1,13 @@
 *.pyc
 *.swp
 *.swo
+
 .ropeproject
+
+*.png
+*.jpg
+*.JPG
+
+*.txt
+*.epub
+*.pdf
